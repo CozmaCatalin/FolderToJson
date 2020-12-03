@@ -25,13 +25,24 @@ def get_file_extension_statistics(extensions , files , size):
 def get_statistics(extensions,total_size,total_files):
     statistics = []
     for attr, value in extensions.items():
+        if total_size == 0:
+            size_percent = 0
+        else:
+            size_percent = f'{(value["size"]*100)/total_size}%'
+
+        if total_files == 0:
+            count_percent = 0
+        else:
+            count_percent = f'{(value["count"]*100)/total_files}%'
+
         statistics.append({
-            "size_percent":f'{round((value["size"]*100)/total_size,2)}%',
-            "count_percent":f'{round((value["count"]*100)/total_files,2)}%',
+            "size_percent":size_percent,
+            "count_percent":count_percent,
             "extension":attr,
             "size":value["size"],
             "count":value["count"]
         })
+
     return  statistics
 
 def get_directory_content_json_form(directory,json_format):
@@ -61,8 +72,9 @@ def get_directory_content_json_form(directory,json_format):
 
     return json_format
 
-my_json = get_directory_content_json_form('E:\Facultate 3\FolderToJson',{})
+my_json = get_directory_content_json_form('E:\FITNESS-APP-FRONTEND',{})
+
 print(str(my_json["size"]) + " bytes " + str(my_json["files_number"]) + " files " + str(my_json["folders_number"]) + " folders")
-json_string = json.dumps(my_json)
+json_string = json.dumps(my_json["files_extensions_statistics"])
 parsed = json.loads(json_string)
 print(json.dumps(parsed, indent=4, sort_keys=True))
