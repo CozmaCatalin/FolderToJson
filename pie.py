@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 def create_pie(data,statistics_wanted):
     #inspiration : https://www.geeksforgeeks.org/bar-plot-in-matplotlib/
-    print(data)
+
     name = [item["extension"] for item in data]
     price = [item[statistics_wanted] for item in data]
 
@@ -30,6 +30,7 @@ def create_pie(data,statistics_wanted):
                  str(round((i.get_width()), 2)),
                  fontsize=10, fontweight='bold',
                  color='grey')
+    ax.set_title(statistics_wanted,loc='left', )
     plt.show()
 
 
