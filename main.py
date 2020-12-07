@@ -1,5 +1,6 @@
 import os
 import json
+from pie import create_pie
 
 def enter_directory():
     while True:
@@ -28,12 +29,12 @@ def get_statistics(extensions,total_size,total_files):
         if total_size == 0:
             size_percent = 0
         else:
-            size_percent = f'{(value["size"]*100)/total_size}%'
+            size_percent = (value["size"]*100)/total_size
 
         if total_files == 0:
             count_percent = 0
         else:
-            count_percent = f'{(value["count"]*100)/total_files}%'
+            count_percent = (value["count"]*100)/total_files
 
         statistics.append({
             "size_percent":size_percent,
@@ -45,6 +46,28 @@ def get_statistics(extensions,total_size,total_files):
 
     return  statistics
 
+def get_extension_statistics_wanted(statistics,ext):
+    my_json = {}
+    answer = []
+    for statistic in statistics:
+        if statistic["extension"] in ext:
+           my_json[statistic["extension"]] = statistic
+
+    for e in ext:
+        if e in my_json.keys():
+            answer.append(my_json[e])
+        else:
+            answer.append({
+                "count":0,
+                "count_percent":0,
+                "size":0,
+                "size_percent":0,
+                "extension":e
+            })
+
+    return answer
+
+
 def get_directory_content_json_form(directory,json_format):
     json_format["files"] = []
     json_format["size"] = 0
@@ -54,7 +77,7 @@ def get_directory_content_json_form(directory,json_format):
 
     files = os.listdir(directory)
     for file in files:
-        path = f'{directory}\{file}'
+        path = ("%s\%s" % (directory,file))
         if os.path.isdir(path):
             json_format["folders_number"] += 1
             json_format[path] = get_directory_content_json_form(path,{})
@@ -72,9 +95,17 @@ def get_directory_content_json_form(directory,json_format):
 
     return json_format
 
-my_json = get_directory_content_json_form('E:\FITNESS-APP-FRONTEND',{})
+# extensions = input("Enter the extensions statistics you want like this : .ex1,.ex2,.ex3\n").split(',')
 
-print(str(my_json["size"]) + " bytes " + str(my_json["files_number"]) + " files " + str(my_json["folders_number"]) + " folders")
+extensions = ".mp4,.py,.dd".split(",")
+my_json = get_directory_content_json_form('E:\Facultate 3\ISSA 4',{})
+
 json_string = json.dumps(my_json["files_extensions_statistics"])
 parsed = json.loads(json_string)
-print(json.dumps(parsed, indent=4, sort_keys=True))
+# print(json.dumps(parsed, indent=4, sort_keys=True))
+
+file = open('myfile.json', 'w+')
+json.dump(parsed, file)
+
+# create_pie(my_json["files_extensions_statistics"],"size_percent")
+create_pie(get_extension_statistics_wanted(my_json["files_extensions_statistics"],extensions),"size_percent")
