@@ -95,17 +95,16 @@ def get_directory_content_json_form(directory,json_format,extensions_wanted):
 
     return json_format
 
-
 directory = "E:\Facultate 3"
 extensions = "".split(",")
-statistics_type = "count_percent"
 
 json_resulted = get_directory_content_json_form(directory,{},extensions)
 json_object = json.dumps(json_resulted, indent = 4)
 
-
 with open(directory.split('\\')[-1]+".json", "w") as outfile:
     outfile.write(json_object)
 
-create_pie(json_resulted["files_extensions_statistics"], statistics_type)
+
+create_pie(json_resulted["files_extensions_statistics"], "count_percent")
+create_pie(json_resulted["files_extensions_statistics"], "size_percent")
 
