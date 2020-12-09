@@ -1,6 +1,6 @@
 import os
 import json
-from pie import create_pie
+from ui import creat_statistic_ui
 
 def enter_directory():
     while True:
@@ -105,6 +105,6 @@ with open(directory.split('\\')[-1]+".json", "w") as outfile:
     outfile.write(json_object)
 
 
-create_pie(json_resulted["files_extensions_statistics"], "count_percent")
-create_pie(json_resulted["files_extensions_statistics"], "size_percent")
+creat_statistic_ui(json_resulted["files_extensions_statistics"], "count_percent")
+creat_statistic_ui(json_resulted["files_extensions_statistics"], "size_percent")
 

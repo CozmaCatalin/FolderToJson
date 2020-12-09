@@ -2,7 +2,7 @@ import tkinter as tk
 import random
 import matplotlib.pyplot as plt
 
-def create_pie(data,statistics_wanted):
+def creat_statistic_ui(data,statistics_wanted):
     #inspiration : https://www.geeksforgeeks.org/bar-plot-in-matplotlib/
     name = [item["extension"] for item in data]
     price = [item[statistics_wanted] for item in data]
